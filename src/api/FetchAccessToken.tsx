@@ -1,6 +1,6 @@
-const YOUR_CLIENT_ID = '468abe4343844f4584fbc728f7802068'
-const YOUR_CLIENT_SECRET = '2d408f4431404c1d88df2c051e5f86f8'
-const YOUR_REDIRECT_URI = 'http://localhost:5173/login'
+const YOUR_CLIENT_ID = import.meta.env.VITE_CLIENT_ID
+const YOUR_CLIENT_SECRET = import.meta.env.VITE_CLIENT_SECRET
+const YOUR_REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI
 
 // const scopes = 'user-read-private user-read-email' // Permisos que necesitas
 // Construir la URL de autorización
