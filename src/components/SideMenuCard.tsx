@@ -1,4 +1,5 @@
 import { Playlist } from '../types/Playlist'
+import PinIcon from '../icons/pinIcon.svg?react'
 
 interface Props {
   playlist: Playlist
@@ -22,7 +23,8 @@ export default function SideMenuCard({ playlist }: Props) {
       </picture>
       <div className='flex flex-auto flex-col truncate'>
         <h4 className='text-sm'>{name}</h4>
-        <span className='text-xs text-gray-400'>
+        <span className='text-xs text-gray-400 flex flex-row gap-2'>
+          <PinIcon />
           Playlist • {owner.display_name}
         </span>
       </div>
