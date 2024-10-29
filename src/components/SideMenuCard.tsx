@@ -1,13 +1,13 @@
-import { Playlist } from '../lib/data'
+import { Playlist } from '../types/Playlist'
 
 interface Props {
   playlist: Playlist
 }
 export default function SideMenuCard({ playlist }: Props) {
-  const { id, cover, title, artists } = playlist
+  const { id, owner, images, name } = playlist
 
   //TODO: use Intl.ListFormat = Intl.ListFormat || function () {}
-  const artistsString = artists.join(', ')
+  // const artistsString = artists.join(', ')
   return (
     <a
       href={`/playlist/${id}`}
@@ -15,14 +15,16 @@ export default function SideMenuCard({ playlist }: Props) {
     >
       <picture className='h-12 w-12 flex-none'>
         <img
-          src={cover}
-          alt={`Cover of ${title} by ${artistsString}`}
+          src={images?.[0].url}
+          alt={`Cover of ${name} by ${owner.display_name}`}
           className='object-cover w-full h-full rounded-md'
         />
       </picture>
       <div className='flex flex-auto flex-col truncate'>
-        <h4 className='text-sm'>{title}</h4>
-        <span className='text-xs text-gray-400'>{artistsString}</span>
+        <h4 className='text-sm'>{name}</h4>
+        <span className='text-xs text-gray-400'>
+          Playlist • {owner.display_name}
+        </span>
       </div>
     </a>
   )

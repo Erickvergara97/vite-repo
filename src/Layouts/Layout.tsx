@@ -1,12 +1,16 @@
+import { Navigate, Outlet } from 'react-router-dom'
 import AsideMenu from '../components/AsideMenu'
 import NavMenu from '../components/NavMenu'
 import Player from '../components/Player'
+import { useAppSelector } from '../redux/reduxHooks'
 
-interface Props {
-  children: React.ReactNode
-}
+export default function Layout() {
+  const accessToken = useAppSelector((state) => state.auth.accessToken)
 
-export default function Layout({ children }: Props) {
+  if (!accessToken) {
+    return <Navigate to='/login' />
+  }
+
   return (
     <div id='app' className='relative h-screen p-2 gap-2'>
       <nav className='[grid-area:nav] flex-row justify-center	 min-h-[100px]'>
@@ -16,7 +20,7 @@ export default function Layout({ children }: Props) {
         <AsideMenu />
       </aside>
       <main className='[grid-area:main] rounded-lg bg-zinc-900 overflow-y-auto'>
-        {children}
+        <Outlet />
       </main>
       <footer className='[grid-area:player] min-h-[100px]'>
         <Player />
