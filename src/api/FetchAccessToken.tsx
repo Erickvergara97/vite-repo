@@ -1,3 +1,10 @@
+import {
+  clearTokens,
+  setAccessToken,
+  setRefreshToken
+} from '../redux/slices/authSlice'
+import store from '../redux/store'
+
 const YOUR_CLIENT_ID = import.meta.env.VITE_CLIENT_ID
 const YOUR_CLIENT_SECRET = import.meta.env.VITE_CLIENT_SECRET
 const YOUR_REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI
@@ -38,7 +45,45 @@ export const fetchAccessToken = async (code: string) => {
     throw new Error('Error al obtener el token')
   }
 
-  // localStorage.setItem('access_token', data.access_token) //esto puede ir en return data asi estaba antes.
-  // localStorage.setItem('refresh_token', data.refresh_token)
   return data
+}
+
+export const refreshAccessToken = async (refreshToken: string) => {
+  const url = 'https://accounts.spotify.com/api/token'
+
+  if (!refreshToken) return
+
+  const payload = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Basic ${btoa(`${YOUR_CLIENT_ID}:${YOUR_CLIENT_SECRET}`)}`
+    },
+    body: new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken
+    })
+  }
+  try {
+    const response = await fetch(url, payload)
+
+    if (!response.ok) {
+      throw new Error('Failed to refresh access token')
+    }
+
+    const data = await response.json()
+    store.dispatch(
+      setAccessToken({
+        accessToken: data.access_token,
+        expiresIn: data.expires_in
+      })
+    )
+    if (data.refresh_token) {
+      store.dispatch(setRefreshToken(data.refresh_token)) // Almacena el nuevo refresh token en Redux
+    }
+    // return data.access_token // Retorna el nuevo access_token
+  } catch (error) {
+    console.error('Error refreshing token:', error)
+    store.dispatch(clearTokens()) // Limpia tokens si hay un error
+  }
 }

@@ -2,19 +2,11 @@ import SideMenuItem from './SideMenuItem'
 import SideMenuCard from './SideMenuCard'
 import LibraryIcon from '../icons/library.svg?react'
 import { useAppSelector } from '../redux/reduxHooks'
-import { useEffect, useState } from 'react'
-import { fetchUserPlaylists } from '../api/FetchPlaylist'
-import { Playlist } from '../types/Playlist'
 
 export default function AsideMenu() {
-  const accessToken = useAppSelector((state) => state.auth.accessToken)
-  const [playlists, setPlaylists] = useState<Playlist[]>([])
-
-  useEffect(() => {
-    if (accessToken) {
-      fetchUserPlaylists(accessToken).then((data) => setPlaylists(data))
-    }
-  }, [accessToken])
+  const { playlists, loading, error } = useAppSelector(
+    (state) => state.playlists
+  )
 
   return (
     <nav className='flex flex-col flex-1 gap-2'>
@@ -24,6 +16,11 @@ export default function AsideMenu() {
             <LibraryIcon />
             Tu biblioteca
           </SideMenuItem>
+          {loading && <li>Loading playlists...</li>}
+          {error && <li>{error}</li>}
+          {playlists.length === 0 && !loading && (
+            <li>No playlists available.</li>
+          )}
           {playlists.map((playlist, index) => (
             <SideMenuCard key={index} playlist={playlist} />
           ))}

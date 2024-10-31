@@ -2,10 +2,26 @@ import { Navigate, Outlet } from 'react-router-dom'
 import AsideMenu from '../components/AsideMenu'
 import NavMenu from '../components/NavMenu'
 import Player from '../components/Player'
-import { useAppSelector } from '../redux/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../redux/reduxHooks'
+import { useEffect } from 'react'
+import { getUserPlaylists } from '../redux/slices/playlistsSlice'
+import { isTokenExpired } from '../helpers/AccessTokenValidation'
+import { refreshAccessToken } from '../api/FetchAccessToken'
 
 export default function Layout() {
   const accessToken = useAppSelector((state) => state.auth.accessToken)
+  const dispatch = useAppDispatch() // Hook para despachar acciones
+  const tokenExpire = useAppSelector((state) => state.auth.expiresAt)
+  const refreshToken = useAppSelector((state) => state.auth.refreshToken)
+
+  useEffect(() => {
+    if (tokenExpire && refreshToken && isTokenExpired(tokenExpire)) {
+      refreshAccessToken(refreshToken) // Refresca el token si ha expirado
+    }
+    if (accessToken && tokenExpire && tokenExpire !== null) {
+      dispatch(getUserPlaylists({ accessToken }))
+    }
+  }, [dispatch, accessToken, tokenExpire, refreshToken])
 
   if (!accessToken) {
     return <Navigate to='/login' />

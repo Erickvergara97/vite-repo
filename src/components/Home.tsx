@@ -11,8 +11,8 @@ export default function Home() {
       <div className='relative z-10 px-6 pt-10'>
         <Greeting />
         <div className='flex flex-wrap mt-6 gap-4'>
-          {playlists.map((playlist) => (
-            <PlaylistItemCard playlist={playlist} />
+          {playlists.map((playlist, index) => (
+            <PlaylistItemCard key={index} playlist={playlist} />
           ))}
         </div>
       </div>

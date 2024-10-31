@@ -26,7 +26,6 @@ export default function PlaylistHome() {
         .finally(() => setLoading(false))
     }
   }, [accessToken, id])
-  console.log(playlist)
 
   if (loading) {
     return <p>Cargando playlist...</p>
@@ -74,7 +73,7 @@ export default function PlaylistHome() {
                 {playlist?.followers?.total > 1
                   ? 'veces guardadas'
                   : 'vez guardada'}
-                <p className='mx-1'>•</p>
+                <span className='mx-1'>•</span>
                 <span className='text-white'>
                   {' '}
                   {playlist?.tracks?.total}{' '}
