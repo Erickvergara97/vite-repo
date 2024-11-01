@@ -1,6 +1,7 @@
 import { useAppSelector } from '../redux/reduxHooks'
 import Greeting from './Greeting'
 import PlaylistItemCard from './PlaylistItemCard'
+import RecentlyPlayedCards from './RecentlyPlayedCards'
 
 export default function Home() {
   const { playlists } = useAppSelector((state) => state.playlists)
@@ -10,6 +11,13 @@ export default function Home() {
       className='relative transition-all duration-1000 bg-green-600'
     >
       <div className='relative z-10 px-6 pt-10'>
+        <div className='flex flex-wrap mt-6'>
+          {playlists.slice(0, 8).map((playlist, index) => (
+            <div key={index} className='w-1/2 p-1'>
+              <RecentlyPlayedCards playlist={playlist} />
+            </div>
+          ))}
+        </div>
         <Greeting />
         <div className='flex flex-wrap mt-6 gap-4'>
           {playlists.map((playlist, index) => (
