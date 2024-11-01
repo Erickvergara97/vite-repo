@@ -1,8 +1,9 @@
-import { playlists } from '../lib/data'
+import { useAppSelector } from '../redux/reduxHooks'
 import Greeting from './Greeting'
 import PlaylistItemCard from './PlaylistItemCard'
 
 export default function Home() {
+  const { playlists } = useAppSelector((state) => state.playlists)
   return (
     <div
       id='playlist-container'

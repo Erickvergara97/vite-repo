@@ -14,6 +14,7 @@ const Play = () => (
 
 export default function Player() {
   const [isPlaying, setIsPlaying] = useState(false)
+  // const [currentSong, setCurrentSong] = useState(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   const handleClick = () => {
