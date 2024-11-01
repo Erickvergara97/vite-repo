@@ -10,8 +10,8 @@ export default function AsideMenu() {
 
   return (
     <nav className='flex flex-col flex-1 gap-2'>
-      <div className='bg-zinc-900 rounded-lg p-2 flex-1'>
-        <ul>
+      <div className='bg-zinc-900 rounded-lg p-5 flex-1'>
+        <ul className='flex flex-col gap-5'>
           <SideMenuItem href='/'>
             <LibraryIcon />
             Tu biblioteca
@@ -21,9 +21,11 @@ export default function AsideMenu() {
           {playlists.length === 0 && !loading && (
             <li>No playlists available.</li>
           )}
-          {playlists.map((playlist, index) => (
-            <SideMenuCard key={index} playlist={playlist} />
-          ))}
+          <div className='flex flex-col gap-4'>
+            {playlists.map((playlist, index) => (
+              <SideMenuCard key={index} playlist={playlist} />
+            ))}
+          </div>
         </ul>
       </div>
     </nav>

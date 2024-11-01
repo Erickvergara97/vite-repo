@@ -20,7 +20,7 @@ export default function Home() {
         </div>
         <Greeting />
         <div className='flex flex-wrap mt-6 gap-4'>
-          {playlists.map((playlist, index) => (
+          {playlists.slice(0, 5).map((playlist, index) => (
             <PlaylistItemCard key={index} playlist={playlist} />
           ))}
         </div>
